@@ -20,6 +20,7 @@ import axios from 'axios'
     if (version === 'login') version = 'signup'
     else version = 'login'
   }
+  const onSubmit = () => {}
 </script>
 
 <main>
@@ -34,7 +35,12 @@ import axios from 'axios'
       placeholder="password"
     />
     <button on:click={handleClick}>Submit</button>
-    <p on:click={() => changeVersion()}>Don't have an account. Sign in here</p>
+    <p on:click={() => changeVersion()}>
+      Don't have an account. Sign in here
+    </p>
+    <button on:click={() => onSubmit()}>
+      {version === 'login' ? "Log In" : "Sign Up"}
+    </button>
 	</div>
 </main>
 
