@@ -1,49 +1,49 @@
 <script>
   import { onMount } from "svelte"
-  import { writable } from "svelte/store"
+  import { restaurants } from '../store.js';
+  import WhereShouldIEat from './whereShouldIEat.svelte'
   import axios from "axios"
   let radius = 5
-  let nearbyRestaurants = []
-  const restaurants = writable([])
+  let nearbyRestaurants
 
   const success = async (pos) => {
-    console.log('in success')
     const { latitude, longitude } = pos.coords
-
     const places = await axios.post('http://localhost:80/places/placesNearby', {
       radius,
       latitude,
       longitude
     })
 
-    // restaurants.set(places)
-
-    // restaurants.subscribe(value => {
-    //   console.log('restaurants are', value)
-    // })
-
     nearbyRestaurants = places
+    restaurants.update((value) => places.data)
+  }
 
-    console.log('nearbyRestaurants are', nearbyRestaurants)
-
-
+  const error = (err) => {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
   onMount(async () => {
-    navigator.geolocation.getCurrentPosition(success)
+    navigator.geolocation.getCurrentPosition(success, error)
   })
 </script>
 
 <main>
-	<div>
-    Where Should I Eat?
-	</div>
   <div>
-    History
-	</div>
+    <a href='whereShouldIEat'>
+      Where Should I Eat?
+    </a>
+  </div>
   <div>
-    Settings
-	</div>
+    <a href='history'>
+      History
+    </a>
+  </div>
+  <div>
+    <a href='settings'>
+      Settings
+    </a>
+  </div>
+  <WhereShouldIEat />
 </main>
 
 <style>
