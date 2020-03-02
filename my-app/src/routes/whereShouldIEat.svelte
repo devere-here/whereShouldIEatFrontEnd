@@ -1,5 +1,6 @@
 <script>
   import { restaurants } from '../store.js'
+
   let chosenRestaurant
   let nearbyRestaurants
   const getNewRestaurant = () => {
@@ -8,10 +9,10 @@
   }
   const confirmSelection = () => {}
   const unsubscribe = restaurants.subscribe(value => {
-		nearbyRestaurants = value
+    nearbyRestaurants = value
     const idx = Math.floor(Math.random(nearbyRestaurants.length))
     chosenRestaurant = nearbyRestaurants[idx]
-	});
+  });
 </script>
 
 <div>

@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte"
+  import { goto } from '@sapper/app';
   import { restaurants } from '../store.js';
   import WhereShouldIEat from './whereShouldIEat.svelte'
   import axios from "axios"
@@ -14,7 +15,7 @@
       longitude
     })
 
-    nearbyRestaurants = places
+    nearbyRestaurants = places.data
     restaurants.update((value) => places.data)
   }
 
@@ -29,21 +30,20 @@
 
 <main>
   <div>
-    <a href='whereShouldIEat'>
+    <span on:click={() => goto('whereShouldIEat')}>
       Where Should I Eat?
-    </a>
+    </span>
   </div>
   <div>
-    <a href='history'>
+    <span on:click={() => goto('history')}>
       History
-    </a>
+    </span>
   </div>
   <div>
-    <a href='settings'>
+    <span on:click={() => goto('settings')}>
       Settings
-    </a>
+    </span>
   </div>
-  <WhereShouldIEat />
 </main>
 
 <style>
