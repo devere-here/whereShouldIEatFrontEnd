@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte"
   import { goto } from '@sapper/app';
-  import { restaurants } from '../store.js';
+  import { restaurants, restaurantHistory } from '../store.js'
   import WhereShouldIEat from './whereShouldIEat.svelte'
   import axios from "axios"
   let radius = 5
@@ -16,15 +16,21 @@
     })
 
     nearbyRestaurants = places.data
-    restaurants.update((value) => places.data)
+    restaurants.update(() => places.data)
+  }
+
+  const getHistory = async () => {
+    const meals = await axios.get('http://localhost:80/mongo/recentMeals')
+    restaurantHistory.update(() => meals.data)
   }
 
   const error = (err) => {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
+    console.warn(`ERROR(${err.code}): ${err.message}`)
   }
 
   onMount(async () => {
     navigator.geolocation.getCurrentPosition(success, error)
+    getHistory()
   })
 </script>
 

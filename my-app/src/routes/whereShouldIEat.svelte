@@ -1,5 +1,6 @@
 <script>
-  import { restaurants } from '../store.js'
+  import { restaurants, restaurantHistory } from '../store.js'
+  import axios from "axios"
 
   let chosenRestaurant
   let nearbyRestaurants
@@ -7,7 +8,14 @@
     const idx = Math.floor(Math.random(nearbyRestaurants.length))
     chosenRestaurant = nearbyRestaurants[idx]
   }
-  const confirmSelection = () => {}
+  const confirmSelection = async () => {
+    const newRestaurant = await axios.post('http://localhost:80/mongo/chosenMeal', {
+      id: chosenRestaurant.id,
+      name: chosenRestaurant.name,
+    })
+
+    restaurantHistory.update(history => [...history, newRestaurant])
+  }
   const unsubscribe = restaurants.subscribe(value => {
     nearbyRestaurants = value
     const idx = Math.floor(Math.random(nearbyRestaurants.length))
