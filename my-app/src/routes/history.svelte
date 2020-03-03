@@ -1,4 +1,5 @@
 <script>
+  import axios from "axios"
   import { onMount } from "svelte"
   import { restaurantHistory } from '../store.js'
   let restaurants
