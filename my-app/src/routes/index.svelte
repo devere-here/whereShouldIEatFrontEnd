@@ -1,6 +1,5 @@
 <script>
-	import LoginSignup from '../components/LoginSignup.svelte';
-
+	import LoginSignup from "../components/LoginSignup.svelte";
 </script>
 
 <style>
