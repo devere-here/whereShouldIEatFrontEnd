@@ -1,12 +1,9 @@
 <script context="module">
-	export async function preload(page, session) {
-    const { user } = session;
-
-		if (!user) {
+  import Cookies from 'js-cookie'
+	export async function preload() {
+		if (!Cookies.get('username')) {
 			return this.redirect(302, '/');
 		}
-
-		return { user };
   }
 </script>
 

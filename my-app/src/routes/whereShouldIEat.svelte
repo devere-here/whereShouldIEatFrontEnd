@@ -1,3 +1,12 @@
+<script context="module">
+  import Cookies from 'js-cookie'
+	export async function preload() {
+		if (!Cookies.get('username')) {
+			return this.redirect(302, '/');
+		}
+  }
+</script>
+
 <script>
   import { restaurants, restaurantHistory } from '../store.js'
   import axios from "axios"

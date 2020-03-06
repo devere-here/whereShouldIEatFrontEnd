@@ -1,18 +1,28 @@
 <script>
-import axios from 'axios'
+  import axios from 'axios'
+  import Cookies from 'js-cookie'
   let version = 'login'
   let username = ''
   let password = ''
+  let error = ''
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    let response
     if (version === 'login') {
-      axios.put('/signup', (req, res) => {
-        console.log('in signup req, res', req, res)
+      response = await axios.post('http://localhost:80/user/login', {
+        username,
+        password
       })
     } else {
-      axios.put('/signup', (req, res) => {
-        console.log('in signup req, res', req, res)
+      response = await axios.post('http://localhost:80/user/signup', {
+        username,
+        password
       })
+    }
+    if (response.success) {
+      Cookies.set('username', username)
+    } else if (response.error) {
+      error = response.error
     }
   }
 
@@ -29,10 +39,12 @@ import axios from 'axios'
     <input
       name="username"
       placeholder="username"
+      bind:value={username}
     />
     <input
       name="password"
       placeholder="password"
+      bind:value={password}
     />
     <button on:click={handleClick}>Submit</button>
     <p on:click={() => changeVersion()}>
@@ -41,6 +53,9 @@ import axios from 'axios'
     <button on:click={() => onSubmit()}>
       {version === 'login' ? "Log In" : "Sign Up"}
     </button>
+    {#if error}
+      <h1>error</h1>
+    {/if}
 	</div>
 </main>
 
