@@ -1,6 +1,7 @@
 <script>
   import axios from 'axios'
   import Cookies from 'js-cookie'
+  import { goto } from '@sapper/app';
   let version = 'login'
   let username = ''
   let password = ''
@@ -19,10 +20,11 @@
         password
       })
     }
-    if (response.success) {
+    if (response.data.success) {
       Cookies.set('username', username)
-    } else if (response.error) {
-      error = response.error
+      goto('/Dashboard')
+    } else if (response.data.error) {
+      error = response.data.error
     }
   }
 
@@ -30,7 +32,6 @@
     if (version === 'login') version = 'signup'
     else version = 'login'
   }
-  const onSubmit = () => {}
 </script>
 
 <main>
@@ -46,12 +47,11 @@
       placeholder="password"
       bind:value={password}
     />
-    <button on:click={handleClick}>Submit</button>
-    <p on:click={() => changeVersion()}>
-      Don't have an account. Sign in here
-    </p>
-    <button on:click={() => onSubmit()}>
+    <button on:click={handleClick}>
       {version === 'login' ? "Log In" : "Sign Up"}
+    </button>
+    <button on:click={() => changeVersion()}>
+      Don't have an account. {version === 'login' ? "Sign In" : "Log Up"} here
     </button>
     {#if error}
       <h1>error</h1>
