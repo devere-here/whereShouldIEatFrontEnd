@@ -28,13 +28,13 @@
     restaurants.update(() => places.data)
   }
 
-  const getHistory = async () => {
-    const meals = await axios.get('http://localhost:80/mongo/recentMeals')
+  const getHistory = async (userId) => {
+    const meals = await axios.get(`http://localhost:80/mongo/recentMeals?userId=${userId}`)
     restaurantHistory.update(() => meals.data)
   }
 
-  const getSettings = async () => {
-    const settings = await axios.get('http://localhost:80/mongo/settings')
+  const getSettings = async (userId) => {
+    const settings = await axios.get(`http://localhost:80/mongo/settings?userId=${userId}`)
     if (settings.data.distance) {
       radius = settings.data[0].distance
     }
@@ -46,8 +46,9 @@
   }
 
   onMount(async () => {
-    getSettings()
-    getHistory()
+    const { userId } = Cookies.get('whereShouldIEat')
+    getSettings(userId)
+    getHistory(userId)
     navigator.geolocation.getCurrentPosition(success, error)
   })
 </script>

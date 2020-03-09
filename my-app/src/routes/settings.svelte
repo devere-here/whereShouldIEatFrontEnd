@@ -14,9 +14,11 @@
   let repeatRestaurants
   let distance
   const updateSettings = async () => {
+    const { userId } = Cookies.get('whereShouldIEat')
     await axios.post('http://localhost:80/mongo/settings', {
       repeatRestaurants,
-      distance
+      distance,
+      userId
     })
 
     settings.update(() => {

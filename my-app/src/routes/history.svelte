@@ -19,7 +19,8 @@
 
   onMount(async () => {
     if (!restaurants) {
-      const meals = await axios.get('http://localhost:80/mongo/recentMeals')
+      const { userId } = Cookies.get('whereShouldIEat')
+      const meals = await axios.get(`http://localhost:80/mongo/recentMeals?userId=${userId}`)
       restaurantHistory.update(() => meals.data)
     }
   })

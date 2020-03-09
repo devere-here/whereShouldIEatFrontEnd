@@ -18,9 +18,11 @@
     chosenRestaurant = nearbyRestaurants[idx]
   }
   const confirmSelection = async () => {
+    const { userId } = Cookies.get('whereShouldIEat')
     const newRestaurant = await axios.post('http://localhost:80/mongo/chosenMeal', {
       id: chosenRestaurant.id,
       name: chosenRestaurant.name,
+      userId
     })
 
     restaurantHistory.update(history => [...history, newRestaurant])

@@ -27,9 +27,12 @@
         username,
         password
       })
-		}
+    }
     if (response.data.success) {
-      Cookies.set('whereShouldIEast', response.data.token)
+      Cookies.set('whereShouldIEat', {
+        token: response.data.token,
+        userId: response.data.userId
+      })
       goto('/Dashboard')
     } else if (response.data.error) {
       error = response.data.error
