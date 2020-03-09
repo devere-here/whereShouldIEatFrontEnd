@@ -1,7 +1,7 @@
 <script context="module">
   import Cookies from 'js-cookie'
 	export async function preload() {
-		if (Cookies.get('username')) {
+		if (Cookies.get('whereShouldIEat')) {
 			return this.redirect(302, '/Dashboard');
 		}
   }
@@ -29,7 +29,7 @@
       })
 		}
     if (response.data.success) {
-      Cookies.set('username', username)
+      Cookies.set('whereShouldIEast', response.data.token)
       goto('/Dashboard')
     } else if (response.data.error) {
       error = response.data.error

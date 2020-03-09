@@ -1,7 +1,7 @@
 <script context="module">
   import Cookies from 'js-cookie'
 	export async function preload() {
-		if (!Cookies.get('username')) {
+		if (!Cookies.get('whereShouldIEat')) {
 			return this.redirect(302, '/');
 		}
   }
