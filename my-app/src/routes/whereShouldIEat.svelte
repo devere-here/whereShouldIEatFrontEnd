@@ -14,11 +14,12 @@
   let chosenRestaurant
   let nearbyRestaurants
   const getNewRestaurant = () => {
-    const idx = Math.floor(Math.random(nearbyRestaurants.length))
+    const length = nearbyRestaurants.length
+    const idx = Math.floor(Math.random() * length)
     chosenRestaurant = nearbyRestaurants[idx]
   }
   const confirmSelection = async () => {
-    const { userId } = Cookies.get('whereShouldIEat')
+    const userId = Cookies.get('whereShouldIEat')
     const newRestaurant = await axios.post('http://localhost:80/mongo/chosenMeal', {
       id: chosenRestaurant.id,
       name: chosenRestaurant.name,
@@ -29,7 +30,8 @@
   }
   const unsubscribe = restaurants.subscribe(value => {
     nearbyRestaurants = value
-    const idx = Math.floor(Math.random(nearbyRestaurants.length))
+    const length = nearbyRestaurants.length
+    const idx = Math.floor(Math.random() * length)
     chosenRestaurant = nearbyRestaurants[idx]
   });
 </script>

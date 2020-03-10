@@ -29,10 +29,7 @@
       })
     }
     if (response.data.success) {
-      Cookies.set('whereShouldIEat', {
-        token: response.data.token,
-        userId: response.data.userId
-      })
+      Cookies.set('whereShouldIEat', response.data.userId)
       goto('/Dashboard')
     } else if (response.data.error) {
       error = response.data.error

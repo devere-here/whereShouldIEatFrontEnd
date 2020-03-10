@@ -13,7 +13,7 @@
   import { restaurants, restaurantHistory, settings } from '../store.js'
   import WhereShouldIEat from './whereShouldIEat.svelte'
   import axios from "axios"
-  let radius = 5
+  let radius = 3000
   let nearbyRestaurants
 
   const success = async (pos) => {
@@ -36,9 +36,11 @@
   const getSettings = async (userId) => {
     const settings = await axios.get(`http://localhost:80/mongo/settings?userId=${userId}`)
     if (settings.data.distance) {
-      radius = settings.data[0].distance
+      radius = settings.data.distance
     }
-    settings.update(() => settings.data[0])
+    settings.update((value) => {
+      return { ...value, ...settings.data }
+    })
   }
 
   const error = (err) => {
@@ -46,7 +48,7 @@
   }
 
   onMount(async () => {
-    const { userId } = Cookies.get('whereShouldIEat')
+    const userId = Cookies.get('whereShouldIEat')
     getSettings(userId)
     getHistory(userId)
     navigator.geolocation.getCurrentPosition(success, error)

@@ -9,13 +9,14 @@
 
 <script>
   import axios from "axios"
+  import { goto } from '@sapper/app';
   import { settings } from '../store'
 
   let repeatRestaurants
   let distance
   const updateSettings = async () => {
-    const { userId } = Cookies.get('whereShouldIEat')
-    await axios.post('http://localhost:80/mongo/settings', {
+    const userId = Cookies.get('whereShouldIEat')
+    await axios.put('http://localhost:80/mongo/settings', {
       repeatRestaurants,
       distance,
       userId
@@ -25,11 +26,12 @@
       repeatRestaurants,
       distance
     })
+    goto('/Dashboard')
   }
 
   const unsubscribe = settings.subscribe((value = {}) => {
     repeatRestaurants = value.repeatRestaurants
-    distance = value.distance
+    distance = value.distance || 3000
   });
 
 </script>
@@ -38,12 +40,12 @@
   <h1>Settings</h1>
   <div>
     <h2>Distance</h2>
-    <label for="distance">Meters:</label>
+    <label for="distance">Miles: {distance * 0.0006213712}</label>
     <input
       type="range"
       id="distance"
       name="distance"
-      min="1"
+      min="500"
       max="10000"
       bind:value={distance}
     >
