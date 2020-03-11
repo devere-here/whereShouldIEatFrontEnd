@@ -11,6 +11,7 @@
   import { onMount } from "svelte"
   import { goto } from '@sapper/app';
   import { restaurants, restaurantHistory, settings } from '../store.js'
+  import { getRestaurants, getMeals, getSettings as getSettingsFromServer } from '../apiClient.js'
   import WhereShouldIEat from './whereShouldIEat.svelte'
   import axios from "axios"
   let radius = 3000
@@ -18,28 +19,28 @@
 
   const success = async (pos) => {
     const { latitude, longitude } = pos.coords
-    const places = await axios.post('http://localhost:80/places/placesNearby', {
+    const places = await getRestaurants({
       radius,
       latitude,
       longitude
     })
 
-    nearbyRestaurants = places.data
-    restaurants.update(() => places.data)
+    nearbyRestaurants = places
+    restaurants.update(() => places)
   }
 
   const getHistory = async (userId) => {
-    const meals = await axios.get(`http://localhost:80/mongo/recentMeals?userId=${userId}`)
-    restaurantHistory.update(() => meals.data)
+    const meals = await getMeals(userId)
+    restaurantHistory.update(() => meals)
   }
 
   const getSettings = async (userId) => {
-    const settings = await axios.get(`http://localhost:80/mongo/settings?userId=${userId}`)
-    if (settings.data.distance) {
-      radius = settings.data.distance
+    const userSettings = await getSettingsFromServer(userId)
+    if (userSettings.distance) {
+      radius = userSettings.distance
     }
     settings.update((value) => {
-      return { ...value, ...settings.data }
+      return { ...value, ...userSettings }
     })
   }
 

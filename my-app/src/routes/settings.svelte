@@ -11,12 +11,13 @@
   import axios from "axios"
   import { goto } from '@sapper/app';
   import { settings } from '../store'
+  import { updateSettings } from '../apiClient.js'
 
   let repeatRestaurants
   let distance
-  const updateSettings = async () => {
+  const changeSettings = async () => {
     const userId = Cookies.get('whereShouldIEat')
-    await axios.put('http://localhost:80/mongo/settings', {
+    await updateSettings({
       repeatRestaurants,
       distance,
       userId
@@ -58,5 +59,5 @@
       <option value={false}>No</option>
     </select>
   </div>
-  <button on:click={updateSettings}>Submit</button>
+  <button on:click={changeSettings}>Submit</button>
 </div>

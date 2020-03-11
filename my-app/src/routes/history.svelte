@@ -10,6 +10,7 @@
 <script>
   import axios from "axios"
   import { onMount } from "svelte"
+  import { getMeals } from '../apiClient.js'
   import { restaurantHistory } from '../store.js'
   let restaurants
 
@@ -20,8 +21,8 @@
   onMount(async () => {
     if (!restaurants) {
       const userId = Cookies.get('whereShouldIEat')
-      const meals = await axios.get(`http://localhost:80/mongo/recentMeals?userId=${userId}`)
-      restaurantHistory.update(() => meals.data)
+      const meals = await getMeals(userId)
+      restaurantHistory.update(() => meals)
     }
   })
 </script>

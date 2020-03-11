@@ -8,8 +8,9 @@
 </script>
 
 <script>
+  import axios from 'axios'
   import { restaurants, restaurantHistory } from '../store.js'
-  import axios from "axios"
+  import { postMeal } from '../apiClient.js'
 
   let chosenRestaurant
   let nearbyRestaurants
@@ -20,11 +21,12 @@
   }
   const confirmSelection = async () => {
     const userId = Cookies.get('whereShouldIEat')
-    const newRestaurant = await axios.post('http://localhost:80/mongo/chosenMeal', {
+    const restaurantObj = {
       id: chosenRestaurant.id,
       name: chosenRestaurant.name,
       userId
-    })
+    }
+    const newRestaurant = await postMeal(restaurantObj)
 
     restaurantHistory.update(history => [...history, newRestaurant])
   }

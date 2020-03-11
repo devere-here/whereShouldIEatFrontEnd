@@ -10,29 +10,24 @@
 <script>
   import axios from 'axios'
   import { goto } from '@sapper/app';
+  import { login, signup } from '../apiClient.js'
   let version = 'login'
   let username = ''
   let password = ''
   let error = ''
 
   const handleClick = async () => {
-    let response
-    if (version === 'login') {
-      response = await axios.post('http://localhost:80/user/login', {
-        username,
-        password
-      })
-    } else {
-      response = await axios.post('http://localhost:80/user/signup', {
-        username,
-        password
-      })
-    }
-    if (response.data.success) {
-      Cookies.set('whereShouldIEat', response.data.userId)
+    const action = version === 'login' ? login : signup
+    const user = await action({
+      username,
+      password
+    })
+
+    if (user.success) {
+      Cookies.set('whereShouldIEat', user.userId)
       goto('/Dashboard')
-    } else if (response.data.error) {
-      error = response.data.error
+    } else if (user.error) {
+      error = user.error
     }
   }
 

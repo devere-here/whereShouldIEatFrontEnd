@@ -8,8 +8,9 @@
 </script>
 
 <script>
-  import { onMount } from "svelte";
-  import axios from "axios";
+  import { onMount } from 'svelte'
+  import axios from 'axios'
+  import { postMeal } from '../apiClient.js'
   let radius = '5'
   let nearbyRestaurants = []
 
@@ -18,7 +19,7 @@
   const success = async (pos) => {
     const { latitude, longitude } = pos.coords
 
-    const places = await axios.post('https://localhost:80/places/placesNearby', {
+    const places = await postMeal({
       radius,
       latitude,
       longitude
